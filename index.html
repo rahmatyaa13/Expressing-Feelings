@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expressing Feelings: Was & Were</title>
+    <style>
+        :root {
+            --primary-blue: #0ea5e9;
+            --dark-blue: #1e3a8a;
+            --light-blue: #e0f2fe;
+            --bg-color: #f0f9ff;
+            --white: #ffffff;
+            --text-dark: #334155;
+            --text-gray: #64748b;
+            --accent-yellow: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --radius-lg: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 { font-weight: 700; color: var(--dark-blue); }
+
+        header {
+            background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+            color: var(--white);
+            padding: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title { font-size: 1.25rem; }
+        .header-subtitle { font-size: 0.875rem; opacity: 0.9; }
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 99px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn:hover { background-color: var(--dark-blue); transform: translateY(-2px); }
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+        .btn-outline:hover { background-color: var(--primary-blue); color: var(--white); }
+        .btn-yellow { background-color: var(--accent-yellow); color: white; }
+        .btn-yellow:hover { background-color: #d97706; }
+
+        .grid-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .menu-card {
+            background: var(--light-blue);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .menu-card:hover { border-color: var(--primary-blue); transform: scale(1.03); }
+        .menu-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 1rem;
+        }
+        .vocab-card {
+            border: 2px solid var(--light-blue);
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            background: var(--white);
+        }
+        .vocab-card:hover { background: var(--light-blue); }
+        .vocab-emoji { font-size: 2.5rem; }
+        .vocab-en { font-weight: bold; color: var(--dark-blue); font-size: 1.1rem; }
+        .vocab-id { color: var(--text-gray); font-size: 0.9rem; margin-top: 0.25rem; display: none; }
+        .vocab-card.flipped .vocab-id { display: block; }
+        .vocab-card.flipped { background: #dcfce7; border-color: #86efac; }
+
+        .grammar-machine {
+            background: var(--light-blue);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        .machine-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: center; margin-bottom: 1rem;}
+        .selector { padding: 0.5rem; border-radius: 8px; border: 2px solid var(--primary-blue); font-size: 1rem; font-weight: bold; color: var(--dark-blue); background: var(--white); outline: none;}
+        
+        .result-box {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border: 2px dashed var(--primary-blue);
+            text-align: center;
+            font-size: 1.25rem;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .was-were-highlight { color: var(--accent-yellow); font-weight: 900; font-size: 1.5rem; }
+
+        .quiz-option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: var(--white);
+            border: 2px solid var(--light-blue);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: 0.2s;
+        }
+        .quiz-option:hover { border-color: var(--primary-blue); background: var(--light-blue); }
+        .quiz-option.correct { background: #dcfce7; border-color: var(--success); color: #065f46; }
+        .quiz-option.wrong { background: #fee2e2; border-color: var(--danger); color: #991b1b; }
+
+        .feedback-box {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+            display: none;
+            font-size: 0.95rem;
+        }
+        .feedback-box.success { background: #dcfce7; border-left: 4px solid var(--success); }
+        .feedback-box.danger { background: #fee2e2; border-left: 4px solid var(--danger); }
+
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .text-center { text-align: center; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mt-3 { margin-top: 1.5rem; }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--light-blue);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1rem;
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--light-blue);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div>
+                <h1 class="header-title" style="color: #ffffff;">English Class by Miss Tya</h1>
+                <p class="header-subtitle">Kelas VI (MI Almourky)</p>
+            </div>
+            <div style="font-size: 2rem;">🏫</div>
+        </div>
+    </header>
+
+    <main>
+        <section id="sec-dashboard" class="section active">
+            <div class="card text-center">
+                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hello, Students! 👋</h2>
+                <p>Welcome to English Class. Hari ini kita akan belajar tentang <strong>Expressing Feelings</strong> (Mengungkapkan Perasaan) di waktu lampau menggunakan <strong>Was</strong> dan <strong>Were</strong>.</p>
+                
+                <div class="grid-dashboard">
+                    <div class="menu-card" onclick="navTo('sec-vocab')">
+                        <div class="menu-icon">😀</div>
+                        <h3>1. Expressing Feeling</h3>
+                    </div>
+                    <div class="menu-card" onclick="navTo('sec-grammar')">
+                        <div class="menu-icon">🧩</div>
+                        <h3>2. Was/Were</h3>
+                    </div>
+                    <div class="menu-card" onclick="navTo('sec-quiz')">
+                        <div class="menu-icon">🏆</div>
+                        <h3>3. Kuis Evaluasi</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-vocab" class="section">
+            <div class="card">
+                <div class="flex-between mb-3">
+                    <h2>1. Expressing Feeling</h2>
+                    <button class="btn btn-outline" onclick="navTo('sec-dashboard')">⬅️ Kembali</button>
+                </div>
+                <p class="mb-3">Klik kartu di bawah ini untuk melihat arti dari perasaannya!</p>
+                
+                <div class="vocab-grid" id="vocab-container">
+                    <!-- Cards injected via JS -->
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-yellow" onclick="navTo('sec-grammar')">Lanjut ke Rumus ➡️</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-grammar" class="section">
+            <div class="card">
+                <div class="flex-between mb-2">
+                    <h2>2. Grammar: Was vs Were</h2>
+                    <button class="btn btn-outline" onclick="navTo('sec-dashboard')">⬅️ Kembali</button>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: #e0f2fe; padding: 1rem; border-radius: 8px; text-align: center;">
+                        <h3 style="color: var(--primary-blue); font-size: 1.5rem;">WAS</h3>
+                        <p style="font-weight: bold; margin-top: 0.5rem;">I, He, She, It</p>
+                        <p style="font-size: 0.8rem;">(Orang Tunggal / 1 Orang)</p>
+                    </div>
+                    <div style="background: #fef3c7; padding: 1rem; border-radius: 8px; text-align: center;">
+                        <h3 style="color: var(--accent-yellow); font-size: 1.5rem;">WERE</h3>
+                        <p style="font-weight: bold; margin-top: 0.5rem;">You, We, They</p>
+                        <p style="font-size: 0.8rem;">(Jamak / Lebih dari 1 Orang)</p>
+                    </div>
+                </div>
+
+                <div class="grammar-machine">
+                    <h3 class="text-center mb-2">🧩 Mesin Pembuat Kalimat (Sentence Builder)</h3>
+                    <p class="text-center" style="font-size: 0.85rem; margin-bottom: 1rem;">Pilih Subjek dan Perasaan untuk melihat perubahan <strong>Was/Were</strong> dan kalimat contohnya!</p>
+                    
+                    <div class="machine-row">
+                        <select id="sub-select" class="selector" onchange="generateSentence()">
+                            <option value="I">I (Saya)</option>
+                            <option value="He">He (Dia Laki-laki / Ahmad)</option>
+                            <option value="She">She (Dia Perempuan / Aisyah)</option>
+                            <option value="It">It (Hewan/Benda / Kucing itu)</option>
+                            <option value="You">You (Kamu)</option>
+                            <option value="We">We (Kami/Kita)</option>
+                            <option value="They">They (Mereka / Ahmad & Umar)</option>
+                        </select>
+                        <span style="font-size: 1.5rem; font-weight: bold;">+</span>
+                        <select id="feel-select" class="selector" onchange="generateSentence()">
+                            <option value="happy">Happy (Senang)</option>
+                            <option value="sad">Sad (Sedih)</option>
+                            <option value="angry">Angry (Marah)</option>
+                            <option value="sick">Sick (Sakit)</option>
+                            <option value="alone">Alone (Sendirian)</option>
+                            <option value="hungry">Hungry (Lapar)</option>
+                            <option value="thirsty">Thirsty (Haus)</option>
+                            <option value="worried">Worried (Khawatir)</option>
+                            <option value="cold">Cold (Dingin)</option>
+                            <option value="sleepy">Sleepy (Ngantuk)</option>
+                        </select>
+                    </div>
+
+                    <div class="result-box" id="sentence-result">
+                        <!-- Result injected via JS -->
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <button class="btn btn-yellow" onclick="navTo('sec-quiz')">Mulai Kuis Evaluasi 🚀</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-quiz" class="section">
+            <div class="card">
+                <div class="flex-between mb-3" style="border-bottom: 1px solid var(--light-blue); padding-bottom: 1rem;">
+                    <h2>3. Kuis Evaluasi</h2>
+                    <span id="quiz-progress" style="background: var(--primary-blue); color: white; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.85rem; font-weight: bold; display: none;">Soal 1/10</span>
+                </div>
+
+                <!-- Identity Form -->
+                <div id="quiz-intro">
+                    <h3 class="text-center mb-2">Isi Data Diri Dulu Yuk!</h3>
+                    <input type="text" id="student-name" placeholder="Masukkan Nama Lengkapmu..." required>
+                    <input type="text" id="student-class" placeholder="Contoh: Kelas VI A" required>
+                    <button class="btn btn-yellow" style="width: 100%;" onclick="startQuiz()">Mulai Kerjakan 📝</button>
+                    <p id="identity-err" style="color: var(--danger); font-size: 0.85rem; text-align: center; margin-top: 0.5rem; display: none;">Tolong isi nama dan kelasmu dulu ya!</p>
+                </div>
+
+                <!-- Quiz Area -->
+                <div id="quiz-area" style="display: none;">
+                    <h3 id="question-text" class="mb-2" style="font-size: 1.15rem;"></h3>
+                    <div id="options-container">
+                        <!-- Options injected via JS -->
+                    </div>
+                    <div id="quiz-feedback" class="feedback-box"></div>
+                    <button id="btn-next" class="btn btn-yellow mt-3" style="display: none; width: 100%;" onclick="nextQuestion()">Soal Berikutnya ➡️</button>
+                </div>
+
+                <!-- Final Score Area -->
+                <div id="score-area" style="display: none; text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🏆</div>
+                    <h2 class="mb-1">Luar Biasa, <span id="display-name"></span>!</h2>
+                    <p class="mb-2">Kamu telah menyelesaikan latihan hari ini.</p>
+                    <div style="background: var(--light-blue); padding: 2rem; border-radius: var(--radius-lg); display: inline-block; border: 2px solid var(--primary-blue); margin-bottom: 1.5rem;">
+                        <p style="font-size: 1.2rem; font-weight: bold; color: var(--text-gray);">SKOR AKHIR</p>
+                        <p style="font-size: 4rem; font-weight: 900; color: var(--dark-blue); line-height: 1;" id="final-score">100</p>
+                    </div>
+                    <div id="score-message" style="font-weight: bold; font-size: 1.1rem; color: var(--accent-yellow); margin-bottom: 1.5rem;"></div>
+                    <p id="save-status" style="font-size: 0.9rem; color: var(--primary-blue); margin-bottom: 1.5rem; display: none;">⏳ Menyimpan hasil ke database...</p>
+                    <div>
+                        <button class="btn btn-outline" onclick="navTo('sec-dashboard')">Ke Menu Utama</button>
+                        <button class="btn btn-yellow" onclick="navTo('sec-quiz')">Ulangi Kuis</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Media Pembelajaran Interaktif Bahasa Inggris - Kemenag Gorontalo &copy; 2026</p>
+        <p style="font-size: 0.75rem; margin-top: 0.25rem;">(Bisa digunakan 100% Offline)</p>
+    </footer>
+
+    <script>
+        // --- 1. Data Kosa Kata ---
+        const vocabList = [
+            { en: "Happy", id: "Senang", emoji: "😄" },
+            { en: "Sad", id: "Sedih", emoji: "😢" },
+            { en: "Angry", id: "Marah", emoji: "😡" },
+            { en: "Sick", id: "Sakit", emoji: "🤒" },
+            { en: "Alone", id: "Sendirian", emoji: "🧍" },
+            { en: "Hungry", id: "Lapar", emoji: "🤤" },
+            { en: "Thirsty", id: "Haus", emoji: "🥵" },
+            { en: "Worried", id: "Khawatir", emoji: "😟" },
+            { en: "Cold", id: "Dingin", emoji: "🥶" },
+            { en: "Sleepy", id: "Ngantuk", emoji: "🥱" }
+        ];
+
+        function renderVocab() {
+            const container = document.getElementById('vocab-container');
+            container.innerHTML = '';
+            vocabList.forEach((v, index) => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.innerHTML = `
+                    <div class="vocab-emoji">${v.emoji}</div>
+                    <div class="vocab-en">${v.en}</div>
+                    <div class="vocab-id">${v.id}</div>
+                `;
+                card.onclick = () => card.classList.toggle('flipped');
+                container.appendChild(card);
+            });
+        }
+
+        // --- 2. Navigasi & Mesin Kalimat ---
+        function navTo(sectionId) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            if(sectionId === 'sec-vocab' && document.getElementById('vocab-container').innerHTML === '') {
+                renderVocab();
+            }
+            if(sectionId === 'sec-grammar') {
+                generateSentence();
+            }
+            if(sectionId === 'sec-quiz') {
+                document.getElementById('quiz-intro').style.display = 'block';
+                document.getElementById('quiz-area').style.display = 'none';
+                document.getElementById('score-area').style.display = 'none';
+                document.getElementById('quiz-progress').style.display = 'none';
+                document.getElementById('student-name').value = '';
+                document.getElementById('student-class').value = '';
+            }
+        }
+
+        // Konteks Gorontalo untuk Mesin Kalimat
+        const contextDB = {
+            "happy": "after winning the competition at school.",
+            "sad": "because they lost their favorite pencil.",
+            "angry": "because of the traffic jam in Kota Gorontalo.",
+            "sick": "so they went to Aloei Saboe Hospital.",
+            "alone": "in the classroom yesterday.",
+            "hungry": "so they ate Binte Biluhuta.",
+            "thirsty": "after playing football under the hot sun.",
+            "worried": "about the math test yesterday.",
+            "cold": "because it rained heavily last night.",
+            "sleepy": "because they slept late."
+        };
+
+        function generateSentence() {
+            const sub = document.getElementById('sub-select').value;
+            const feel = document.getElementById('feel-select').value;
+            const resBox = document.getElementById('sentence-result');
+            
+            // Logika Was / Were
+            let tobe = "were";
+            if(["I", "He", "She", "It"].includes(sub)) {
+                tobe = "was";
+            }
+            
+            // Konteks kalimat
+            let context = contextDB[feel];
+            let displaySub = sub;
+
+            // Penyesuaian subjek agar natural
+            if(sub === "He") displaySub = "Ahmad";
+            if(sub === "She") displaySub = "Aisyah";
+            if(sub === "It") displaySub = "The cat";
+            if(sub === "They") displaySub = "Ahmad and Umar";
+            if(sub === "We") displaySub = "My friends and I";
+
+            const emoji = vocabList.find(v => v.en.toLowerCase() === feel).emoji;
+
+            resBox.innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">${emoji}</div>
+                <div>${displaySub} <span class="was-were-highlight">${tobe}</span> ${feel} ${context}</div>
+            `;
+        }
+
+        // --- 3. Logika Kuis Interaktif ---
+        const quizData = [
+            {
+                q: "Aisyah (She) ... happy yesterday because she got a good score.",
+                options: ["was", "were", "is", "are"],
+                correct: 0, // index of "was"
+                feedback: "Benar! 'Aisyah' adalah subjek tunggal (She), jadi menggunakan <strong style='color:#0ea5e9;'>WAS</strong>."
+            },
+            {
+                q: "Budi and I (We) ... hungry after swimming at Pantai Kurinai.",
+                options: ["was", "were", "am", "is"],
+                correct: 1,
+                feedback: "Hebat! 'Budi and I' berarti Kami (We). Karena subjeknya jamak, kita menggunakan <strong style='color:#eab308;'>WERE</strong>."
+            },
+            {
+                q: "The cat (It) ... alone in the classroom this morning.",
+                options: ["were", "is", "was", "are"],
+                correct: 2,
+                feedback: "Tepat sekali! 'The cat' adalah hewan tunggal (It), maka to be bentuk lampaunya adalah <strong style='color:#0ea5e9;'>WAS</strong>."
+            },
+            {
+                q: "You ... sleepy during the math class yesterday.",
+                options: ["was", "is", "am", "were"],
+                correct: 3,
+                feedback: "Pintar! Untuk subjek 'You' (Kamu), kita selalu menggunakan pasangan <strong style='color:#eab308;'>WERE</strong>."
+            },
+            {
+                q: "They ... cold because of the heavy rain in Gorontalo last night.",
+                options: ["was", "were", "am", "is"],
+                correct: 1,
+                feedback: "Sempurna! 'They' (Mereka) adalah subjek jamak (lebih dari satu), jadi harus pakai <strong style='color:#eab308;'>WERE</strong>."
+            },
+            {
+                q: "Budi did not eat breakfast this morning. He was very ... at school.",
+                options: ["hungry", "sleepy", "cold", "angry"],
+                correct: 0,
+                feedback: "Benar! Budi tidak sarapan pagi (did not eat breakfast), jadi dia pasti merasa lapar (<strong style='color:#0ea5e9;'>hungry</strong>)."
+            },
+            {
+                q: "Aisyah won the English competition in Gorontalo. She was very ...",
+                options: ["sad", "sick", "happy", "worried"],
+                correct: 2,
+                feedback: "Hebat! Karena Aisyah menang lomba (won the competition), perasaannya pasti senang (<strong style='color:#0ea5e9;'>happy</strong>)."
+            },
+            {
+                q: "It rained heavily last night and I didn't wear a jacket. I was ...",
+                options: ["thirsty", "cold", "alone", "happy"],
+                correct: 1,
+                feedback: "Tepat sekali! Hujan deras (rained heavily) dan tidak pakai jaket pasti membuat merasa dingin (<strong style='color:#0ea5e9;'>cold</strong>)."
+            },
+            {
+                q: "Ahmad played football under the hot sun for 2 hours. He was very ...",
+                options: ["angry", "sick", "thirsty", "sleepy"],
+                correct: 2,
+                feedback: "Pintar! Bermain bola di bawah terik matahari pasti membuat kita merasa haus (<strong style='color:#0ea5e9;'>thirsty</strong>)."
+            },
+            {
+                q: "My favorite cat was lost yesterday. I was very ...",
+                options: ["sad", "hungry", "thirsty", "happy"],
+                correct: 0,
+                feedback: "Betul! Kucing kesayangan yang hilang (lost) pasti membuat kita merasa sedih (<strong style='color:#0ea5e9;'>sad</strong>)."
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        let isAnswered = false;
+
+        // --- TAMBAHAN UNTUK DATABASE ---
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwBc_GyGXWj8sbou-y5gYnUJIwhl_y7sBRChhTFYCWoIXgvGzm81Bt-82IADXEN0ck6XQ/exec";
+        let studentName = "";
+        let studentClass = "";
+        let startTime = null;
+        let numCorrect = 0;
+        let numWrong = 0;
+        let answerDetails = [];
+
+        function startQuiz() {
+            const name = document.getElementById('student-name').value.trim();
+            const cls = document.getElementById('student-class').value.trim();
+            
+            if(!name || !cls) {
+                document.getElementById('identity-err').style.display = 'block';
+                return;
+            }
+
+            studentName = name;
+            studentClass = cls;
+            startTime = new Date(); // Catat waktu mulai pengerjaan
+            numCorrect = 0;
+            numWrong = 0;
+            answerDetails = [];
+
+            document.getElementById('display-name').textContent = name;
+            document.getElementById('quiz-intro').style.display = 'none';
+            document.getElementById('quiz-area').style.display = 'block';
+            document.getElementById('quiz-progress').style.display = 'block';
+            
+            currentQ = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            isAnswered = false;
+            const q = quizData[currentQ];
+            document.getElementById('quiz-progress').textContent = `Soal ${currentQ + 1} dari ${quizData.length}`;
+            document.getElementById('question-text').textContent = `${currentQ + 1}. ${q.q}`;
+            
+            const optContainer = document.getElementById('options-container');
+            optContainer.innerHTML = '';
+            
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option';
+                btn.textContent = opt;
+                btn.onclick = () => selectAnswer(index, btn);
+                optContainer.appendChild(btn);
+            });
+
+            document.getElementById('quiz-feedback').style.display = 'none';
+            document.getElementById('btn-next').style.display = 'none';
+        }
+
+        function selectAnswer(index, btn) {
+            if(isAnswered) return;
+            isAnswered = true;
+            
+            const q = quizData[currentQ];
+            const buttons = document.querySelectorAll('.quiz-option');
+            const fbBox = document.getElementById('quiz-feedback');
+            
+            let isCorrect = (index === q.correct);
+            
+            if(isCorrect) {
+                btn.classList.add('correct');
+                score += 10;
+                numCorrect++;
+                fbBox.innerHTML = `✅ ${q.feedback}`;
+                fbBox.className = 'feedback-box success';
+            } else {
+                btn.classList.add('wrong');
+                buttons[q.correct].classList.add('correct'); // highlight correct answer
+                numWrong++;
+                fbBox.innerHTML = `❌ Kurang tepat. <br><br><strong>Pembahasan:</strong> ${q.feedback}`;
+                fbBox.className = 'feedback-box danger';
+            }
+
+            // Simpan detail jawaban siswa untuk keperluan database
+            answerDetails.push({
+                soal: q.q,
+                jawabanSiswa: q.options[index],
+                kunci: q.options[q.correct],
+                status: isCorrect ? "BENAR" : "SALAH"
+            });
+            
+            fbBox.style.display = 'block';
+            document.getElementById('btn-next').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if(currentQ < quizData.length) {
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            document.getElementById('quiz-area').style.display = 'none';
+            document.getElementById('quiz-progress').style.display = 'none';
+            document.getElementById('score-area').style.display = 'block';
+            
+            document.getElementById('final-score').textContent = score;
+            
+            const msgBox = document.getElementById('score-message');
+            if(score === 100) {
+                msgBox.innerHTML = "Perfect! Kamu sangat menguasai materi Was & Were! 🌟";
+                msgBox.style.color = "var(--success)";
+            } else if (score >= 60) {
+                msgBox.innerHTML = "Bagus! Kamu sudah mulai paham. Yuk terus berlatih! 👍";
+                msgBox.style.color = "var(--primary-blue)";
+            } else {
+                msgBox.innerHTML = "Jangan menyerah! Coba baca kembali rumusnya di menu awal ya. 💪";
+                msgBox.style.color = "var(--danger)";
+            }
+
+            // Kirim data secara otomatis ke Google Sheets
+            sendDataToGAS();
+        }
+
+        function sendDataToGAS() {
+            if (!startTime) return;
+            
+            const endTime = new Date();
+            const timeDiff = Math.floor((endTime - startTime) / 1000);
+            const menit = Math.floor(timeDiff / 60);
+            const detik = timeDiff % 60;
+            const durasi = `${menit} menit ${detik} detik`;
+            
+            // Format rincian jawaban agar mudah dibaca guru di Spreadsheet
+            const rincianText = answerDetails.map((d, i) => 
+                `${i+1}. [${d.status}] Jawab: ${d.jawabanSiswa} | Kunci: ${d.kunci}`
+            ).join("\n");
+
+            const payload = {
+                nama: studentName,
+                kelas: studentClass,
+                durasi: durasi,
+                jumlahBenar: numCorrect,
+                jumlahSalah: numWrong,
+                skor: score,
+                detailJawaban: rincianText
+            };
+
+            const statusEl = document.getElementById('save-status');
+            if (statusEl) {
+                statusEl.style.display = 'block';
+                statusEl.innerHTML = "⏳ Menyimpan hasil ke database...";
+                statusEl.style.color = "var(--primary-blue)";
+            }
+
+            // Menggunakan mode no-cors agar tidak dicekal oleh browser saat POST
+            fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8',
+                },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                if (statusEl) {
+                    statusEl.innerHTML = "✅ Hasil pengerjaan berhasil disimpan ke database!";
+                    statusEl.style.color = "var(--success)";
+                }
+            }).catch(error => {
+                if (statusEl) {
+                    statusEl.innerHTML = "⚠️ Offline: Data gagal terkirim, namun hasil tetap aman di perangkat ini.";
+                    statusEl.style.color = "var(--text-gray)";
+                }
+            });
+        }
+
+        // Jalankan render awal
+        renderVocab();
+    </script>
+</body>
+</html>
